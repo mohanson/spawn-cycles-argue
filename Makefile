@@ -1,10 +1,12 @@
 dep/ckb-c-stdlib:
 	mkdir -p dep
 	cd dep && git clone https://github.com/nervosnetwork/ckb-c-stdlib
+	cd dep/ckb-c-stdlib && git checkout e7aae0f
 
 dep/ckb-vm-bench-scripts:
 	mkdir -p dep
 	cd dep && git clone https://github.com/nervosnetwork/ckb-vm-bench-scripts
+	cd dep/ckb-vm-bench-scripts && git checkout dec7aa9
 	cd dep/ckb-vm-bench-scripts && git submodule update --init --recursive
 
 dep/ckb-vm-bench-scripts/build/secp256k1_bench:
