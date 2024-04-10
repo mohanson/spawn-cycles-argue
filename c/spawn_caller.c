@@ -11,22 +11,23 @@ int main() {
     "foo",
     "bar"
   };
+  int err = 0;
   int8_t spawn_exit_code = 255;
-  uint8_t spawn_content[80] = {};
-  uint64_t spawn_content_length = 80;
-  spawn_args_t spgs = {
-      .memory_limit = 4,
-      .exit_code = &spawn_exit_code,
-      .content = &spawn_content[0],
-      .content_length = &spawn_content_length,
-  };
+  uint64_t pid = 0;
+  uint64_t fds[1] = {0};
+  spawn_args_t spgs = {.argc = 5, .argv = argv, .process_id = &pid, .inherited_fds = fds};
+
   for (int i = 0; i < 1024; i++) {
-    int success = ckb_spawn(1, 3, 0, 5, argv, &spgs);
-    if (success != 0) {
+    err = ckb_spawn(1, 3, 0, 0, &spgs);
+    if (err != 0) {
       return 1;
     }
+    err = ckb_wait(pid, &spawn_exit_code);
+    if (err != 0) {
+      return 2;
+    }
     if (spawn_exit_code != 0) {
-      return 1;
+      return 3;
     }
   }
   return 0;
